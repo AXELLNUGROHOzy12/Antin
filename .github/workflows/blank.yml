@@ -1,0 +1,15 @@
+name: Bikin Replit Melek Terus
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # Berjalan otomatis tiap 5 menit
+  workflow_dispatch: # Biar lu bisa jalanin manual kalau mau
+
+jobs:
+  ping-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ngetuk pintu Replit
+        run: |
+          curl -s "https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev"
+          echo "Ping sukses dikirim!"
