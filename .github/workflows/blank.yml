@@ -2,8 +2,8 @@ name: Bikin Replit Melek Terus
 
 on:
   schedule:
-    - cron: "*/5 * * * *" # Berjalan otomatis tiap 5 menit
-  workflow_dispatch: # Biar lu bisa jalanin manual kalau mau
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
 
 jobs:
   ping-server:
@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Ngetuk pintu Replit
         run: |
-          curl -s "https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev"
-          echo "Ping sukses dikirim!"
+          curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -sL "https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev"
+          echo "Ping sukses dikirim pakai identitas Chrome!"
