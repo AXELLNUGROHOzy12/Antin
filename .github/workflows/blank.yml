@@ -1,4 +1,4 @@
-name: Bikin Replit Melek Terus (Mode Hardcore)
+name: Pantau Replit & Notif Gmail
 
 on:
   schedule:
@@ -6,23 +6,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  ping-pake-chrome:
+  monitor:
     runs-on: ubuntu-latest
     steps:
-      - name: Install Puppeteer
-        run: npm i puppeteer
-
-      - name: Buka Web Pake Chrome Robot
+      - name: Cek Web Asli
+        id: cek_web
         run: |
-          node -e "
-          const puppeteer = require('puppeteer');
-          (async () => {
-            const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
-            const page = await browser.newPage();
-            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-            console.log('Otw buka Replit...');
-            await page.goto('https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev', {waitUntil: 'networkidle2'});
-            console.log('Sukses nyamar jadi manusia!');
-            await browser.close();
-          })();
-          "
+          HASIL=$(curl -sL "https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev")
+          
+          # Ganti KATA_KUNCI sama teks yang PASTI MUNCUL di web lu pas normal
+          if echo "$HASIL" | grep -qi "GET"; then
+            echo "status=aman" >> $GITHUB_ENV
+            echo "Aman, server melek!"
+          else
+            echo "status=mati" >> $GITHUB_ENV
+            echo "Ketutupan ASCII / Mati!"
+          fi
+
+      - name: Kirim Email Notifikasi
+        if: env.status == 'mati'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASS }}
+          subject: "🚨 Woy! Server Replit Ketiduran!"
+          to: "fadilahalhabsyi78@gmail.com" # GANTI SAMA EMAIL LU
+          from: "GitHub Actions Bot"
+          body: "Bro, server Replit lu kayaknya lagi pingsan atau ketutupan layar ASCII nih. Buruan bangunin!"
