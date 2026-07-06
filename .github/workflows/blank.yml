@@ -15,7 +15,7 @@ jobs:
           HASIL=$(curl -sL "https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev")
           
           # Ganti KATA_KUNCI sama teks yang PASTI MUNCUL di web lu pas normal
-          if echo "$HASIL" | grep -qi "GET"; then
+          if echo "$HASIL" | grep -qi "NOVA"; then
             echo "status=aman" >> $GITHUB_ENV
             echo "Aman, server melek!"
           else
