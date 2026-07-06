@@ -1,15 +1,28 @@
-name: Bikin Replit Melek Terus
+name: Bikin Replit Melek Terus (Mode Hardcore)
 
 on:
   schedule:
-    - cron: "*/5 * * * *" # Berjalan otomatis tiap 5 menit
-  workflow_dispatch: # Biar lu bisa jalanin manual kalau mau
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
 
 jobs:
-  ping-server:
+  ping-pake-chrome:
     runs-on: ubuntu-latest
     steps:
-      - name: Ngetuk pintu Replit
+      - name: Install Puppeteer
+        run: npm i puppeteer
+
+      - name: Buka Web Pake Chrome Robot
         run: |
-          curl -s "https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev"
-          echo "Ping sukses dikirim!"
+          node -e "
+          const puppeteer = require('puppeteer');
+          (async () => {
+            const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+            const page = await browser.newPage();
+            await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+            console.log('Otw buka Replit...');
+            await page.goto('https://d652bd72-404d-4613-95d8-2e638af463a9-00-30gd0b03qcoyc.worf.replit.dev', {waitUntil: 'networkidle2'});
+            console.log('Sukses nyamar jadi manusia!');
+            await browser.close();
+          })();
+          "
